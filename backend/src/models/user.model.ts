@@ -1,6 +1,7 @@
-import mongoose from 'mongoose';
+import mongoose, {Types} from 'mongoose';
 
-import { DebtInterface } from './debt.model';
+import Debt, { DebtInterface } from './debt.model';
+
 
 export interface UserInterface{
     name: string;
@@ -10,7 +11,7 @@ export interface UserInterface{
     profilePicture: string;
     amountOwed: number;
     amountOwing: number;
-    debts: [[DebtInterface?], [DebtInterface?]];
+    debts: [];
     _id: mongoose.Types.ObjectId;
   }
 
@@ -46,7 +47,8 @@ const userSchema = new mongoose.Schema<UserInterface>({
     default: 0
   },
   debts: {
-    default: [[], []]
+    type: [],
+    default: []
   }
 });
 

@@ -6,6 +6,7 @@ import authMiddleware from './middlewares/auth.middleware';
 require('dotenv').config();
 
 const authRouter = require('./routes/auth.route');
+const userRouter = require('./routes/user.route');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -14,6 +15,8 @@ app.use(express.json());
 app.use('/auth', authRouter);
 
 app.use(authMiddleware);
+
+app.use('/user', userRouter);
 
 app.get('/', (req, res) => {
   res.send(req.body.user);
