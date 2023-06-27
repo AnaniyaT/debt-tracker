@@ -5,8 +5,12 @@ export interface DebtInterface{
     borrower: mongoose.Types.ObjectId;
     amount: number;
     description: string;
-    date: Date;
+    requestedDate: Date;
+    approvedDate: Date;
+    declinedDate: Date;
+    paidDate: Date;
     paid: boolean;
+    status: string;
     _id: mongoose.Types.ObjectId;
 }
 
@@ -28,9 +32,23 @@ const debtSchema = new mongoose.Schema<DebtInterface>({
         type: String,
         default: ''
     },
-    date: {
+    requestedDate: {
         type: Date,
         required: true
+    },
+    approvedDate: {
+        type: Date,
+    },
+    declinedDate: {
+        type: Date,
+    },
+    paidDate: {
+        type: Date,
+    },
+    status: {
+        type: String,
+        required: true,
+        default: 'pending'
     },
     paid: {
         type: Boolean,

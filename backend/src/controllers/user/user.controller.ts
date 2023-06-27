@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import User, { UserInterface } from "../../models/user.model";
 import { isValidObjectId } from "mongoose";
 import { emailAvailable, usernameAvailable } from "./user.service";
+import { Profile } from "../../models/profile.model";
 import validator from 'validator';
 import bcrypt from 'bcrypt';
 
@@ -44,13 +45,19 @@ const getUserById = async (req: Request, res: Response) => {
         return res.status(404).json({ message: 'User not found.' });
     }
 
-    user.password = "";
+    const profile: Profile = Profile.fromUser(user);
 
-    return res.status(200).json(user);
+    return res.status(200).json(profile);
 }
 
 const getUserByUsername = async (req: Request, res: Response) => {
-    const { username } = req.params;
+    let { username } = req.params;
+
+    if (!username) {
+        return res.status(400).json({ message: 'Missing username.' });
+    }
+
+    username = username.toLowerCase();
 
     const user: UserInterface = await User.findOne({ username: username });
 
@@ -58,13 +65,13 @@ const getUserByUsername = async (req: Request, res: Response) => {
         return res.status(404).json({ message: 'User not found.' });
     }
 
-    user.password = "";
+    const profile: Profile = Profile.fromUser(user);
 
-    return res.status(200).json(user);
+    return res.status(200).json(profile);
 }
 
 const editProfile = async (req: Request, res: Response) => {
-    const { name, username, email, profilePicture, userId} = req.body;
+    const { name, username, email, profilePicture, userId } = req.body;
 
     const originalUser = await User.findById(userId._id);
 
@@ -135,7 +142,9 @@ const changePassword = async (req: Request, res: Response) => {
     }
 
     if (!validator.isStrongPassword(newPassword)) {
-        return res.status(400).json({ message: 'Password must contain at least one uppercase letter, one lowercase letter, one number and one symbol.' });
+        return res.status(400).json({
+            message: 'Password must contain at least one uppercase letter, one lowercase letter, one number and one symbol.'
+        });
     }
 
     user.password = newPassword;
@@ -145,4 +154,20 @@ const changePassword = async (req: Request, res: Response) => {
     return res.status(200).json({ message: 'Password changed successfully.' });
 }
 
-export { getUsers, getUserById, getUserByUsername, editProfile, getMe, changePassword };
+const deleteUser = async (req: Request, res: Response) => {
+    const { userId } = req.params;
+
+    if (!isValidObjectId(userId)) {
+        return res.status(400).json({ message: 'Invalid user id.' });
+    }
+
+    const user: UserInterface = await User.findByIdAndDelete(userId);
+
+    if (!user) {
+        return res.status(404).json({ message: 'User not found.' });
+    }
+
+    return res.status(200).json({ message: 'User deleted successfully.' });
+}
+
+export { getUsers, getUserById, getUserByUsername, editProfile, getMe, changePassword, deleteUser };
