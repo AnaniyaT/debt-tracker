@@ -154,7 +154,7 @@ const changePassword = async (req: Request, res: Response) => {
 }
 
 const deleteUser = async (req: Request, res: Response) => {
-    const { userId } = req.params;
+    const { userId } = req.body;
 
     if (!isValidObjectId(userId)) {
         return res.status(400).json({ message: 'Invalid user id.' });
