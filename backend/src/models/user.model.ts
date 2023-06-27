@@ -2,16 +2,17 @@ import mongoose, {Types} from 'mongoose';
 
 import Debt, { DebtInterface } from './debt.model';
 
-
 export interface UserInterface{
     name: string;
     username: string;
     email: string;
     password: string;
     profilePicture: string;
+    bio: string;
     amountOwed: number;
     amountOwing: number;
-    debts: [];
+    debts: mongoose.Types.ObjectId[];
+    history: mongoose.Types.ObjectId[];
     _id: mongoose.Types.ObjectId;
   }
 
@@ -38,6 +39,10 @@ const userSchema = new mongoose.Schema<UserInterface>({
     type: String,
     default: ''
   },
+  bio: {
+    type: String,
+    default: ''
+  },
   amountOwed: {
     type: Number,
     default: 0
@@ -47,6 +52,10 @@ const userSchema = new mongoose.Schema<UserInterface>({
     default: 0
   },
   debts: {
+    type: [],
+    default: []
+  },
+  history: {
     type: [],
     default: []
   }

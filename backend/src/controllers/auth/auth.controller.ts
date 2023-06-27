@@ -15,12 +15,17 @@ const getToken = (_id: Types.ObjectId, remember: boolean) => {
 }
 
 const validateUsername = async (req: Request, res: Response) => {
-    const { username } = req.params;
+    let { username } = req.params;
+
+    if (!username) {
+        return res.status(400).json({ message: 'Please enter a username.' });
+    }
 
     if (username.length < 3) {
         return res.status(400).json({ message: 'Username must be at least 3 characters long.' });
     }
 
+    username = username.toLowerCase();
     const usernameExists = await User.findOne({ username: username });
 
     if (usernameExists) {
@@ -32,11 +37,13 @@ const validateUsername = async (req: Request, res: Response) => {
 
 
 const signup = async (req: Request, res: Response) => {
-    const { name, username, email, password } = req.body;
+    let { name, username, email, password } = req.body;
 
     if (!name || !username || !email || !password) {
         return res.status(400).json({ message: 'Please enter all fields.' });
     }
+
+    username = username.toLowerCase();
 
     if (!validator.isEmail(email)) {
         return res.status(400).json({ message: 'Please enter a valid email address.' });
@@ -110,7 +117,6 @@ const signin = async (req: Request, res: Response) => {
     user.password = "";
 
     return res.status(201).json({user, token})
-
 }
 
 export { signup, signin, validateUsername };

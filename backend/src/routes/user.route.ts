@@ -1,5 +1,13 @@
 import { Router } from "express";
-import { getUsers, getUserById, getUserByUsername, editProfile, getMe, changePassword } from "../controllers/user/user.controller";
+import {
+    getUsers,
+    getUserById, 
+    getUserByUsername, 
+    editProfile, 
+    getMe, 
+    changePassword, 
+    deleteUser
+} from "../controllers/user/user.controller";
 
 const router = Router();
 
@@ -10,5 +18,7 @@ router.get('/me', getMe);
 
 router.patch('/changePassword', changePassword)
 router.patch('/edit', editProfile);
+
+router.delete('/delete', deleteUser);
 
 module.exports = router;
