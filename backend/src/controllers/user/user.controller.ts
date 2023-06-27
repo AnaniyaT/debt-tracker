@@ -10,12 +10,11 @@ import bcrypt from 'bcrypt';
 const getUsers = async (req: Request, res: Response) => {
     const users: UserInterface[] = await User.find();
 
-    const usersWithoutPassword = users.map((user) => {
-        user.password = "";
-        return user;
+    const profiles = users.map((user) => {
+        return Profile.fromUser(user);
     });
 
-    return res.status(200).json(usersWithoutPassword);
+    return res.status(200).json(profiles);
 };
 
 const getMe = async (req: Request, res: Response) => {
