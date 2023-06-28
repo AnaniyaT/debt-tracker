@@ -107,6 +107,10 @@ Registers a new user account.
 - `email`: The email address for the new user.
 - `password`: The password for the new user.
 
+#### Success Response
+
+- Code: 201
+- Content: `{ "user": UserInterface, "token": string }`
 
 ## Login User
 
