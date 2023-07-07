@@ -69,6 +69,24 @@ const getUserByUsername = async (req: Request, res: Response) => {
     return res.status(200).json(profile);
 }
 
+const searchByUsername = async (req: Request, res: Response) => {
+    let { username } = req.params;
+
+    if (!username) {
+        return res.status(400).json({ message: 'Missing username.' });
+    }
+
+    username = username.toLowerCase();
+
+    const users: UserInterface[] = await User.find({ username: { $regex: username, $options: 'i' } });
+
+    const profiles = users.map((user) => {
+        return Profile.fromUser(user);
+    });
+
+    return res.status(200).json(profiles);
+}
+
 const editProfile = async (req: Request, res: Response) => {
     const { name, username, email, profilePicture, userId } = req.body;
 
@@ -169,4 +187,4 @@ const deleteUser = async (req: Request, res: Response) => {
     return res.status(200).json({ message: 'User deleted successfully.' });
 }
 
-export { getUsers, getUserById, getUserByUsername, editProfile, getMe, changePassword, deleteUser };
+export { getUsers, getUserById, getUserByUsername, searchByUsername, editProfile, getMe, changePassword, deleteUser };

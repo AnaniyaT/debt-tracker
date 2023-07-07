@@ -3,6 +3,7 @@ import {
     getUsers,
     getUserById, 
     getUserByUsername, 
+    searchByUsername,
     editProfile, 
     getMe, 
     changePassword, 
@@ -15,6 +16,7 @@ router.get('/', getUsers);
 router.get('/id/:id', getUserById);
 router.get('/username/:username', getUserByUsername);
 router.get('/me', getMe);
+router.get('/search/:username', searchByUsername);
 
 router.patch('/changePassword', changePassword)
 router.patch('/edit', editProfile);

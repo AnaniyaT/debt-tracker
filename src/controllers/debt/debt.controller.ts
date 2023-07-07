@@ -100,7 +100,7 @@ const requestDebt = async (req: Request, res: Response) => {
         return res.status(500).json({ message: 'Internal server error.' });
     }
     
-    return res.status(200).json(debt);
+    return res.status(201).json(debt);
 }
 
 const approveDebt = async (req: Request, res: Response) => {
@@ -124,7 +124,7 @@ const approveDebt = async (req: Request, res: Response) => {
     }
 
     if (debt.lender.toString() !== userId._id.toString()) {
-        return res.status(401).json({ message: 'Unauthorized.' });
+        return res.status(403).json({ message: 'Unauthorized.' });
     }
 
     if (debt.status !== 'pending') {
@@ -171,7 +171,7 @@ const declineDebt = async (req: Request, res: Response) => {
     }
 
     if (debt.lender.toString() !== userId._id.toString()) {
-        return res.status(401).json({ message: 'Unauthorized.' });
+        return res.status(403).json({ message: 'Unauthorized.' });
     }
 
     if (debt.status !== 'pending') {

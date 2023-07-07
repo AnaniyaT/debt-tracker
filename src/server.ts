@@ -20,7 +20,7 @@ app.use('/user', userRouter);
 app.use('/debt', debtRouter);
 
 app.get('/', (req, res) => {
-  res.send(req.body.user);
+  res.send("Connected to server!");
 });
 
 mongoose.set("strictQuery", false);

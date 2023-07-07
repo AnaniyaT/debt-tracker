@@ -17,6 +17,8 @@ const getToken = (_id: Types.ObjectId, remember: boolean) => {
 const validateUsername = async (req: Request, res: Response) => {
     let { username } = req.params;
 
+    console.log(username);
+
     if (!username) {
         return res.status(400).json({ message: 'Please enter a username.' });
     }
@@ -28,6 +30,10 @@ const validateUsername = async (req: Request, res: Response) => {
     username = username.toLowerCase();
     const usernameExists = await User.findOne({ username: username });
 
+    if (!validator.isAlphanumeric(username)) {
+        return res.status(400).json({ message: 'Username can only contain letters and numbers'});
+    }
+    
     if (usernameExists) {
         return res.status(400).json({ message: 'Username already exists.' });
     }
@@ -86,7 +92,6 @@ const signup = async (req: Request, res: Response) => {
         return res.status(201).json({ user, token });
 
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: 'Something went wrong.' });
     }
 }
@@ -95,6 +100,10 @@ const signup = async (req: Request, res: Response) => {
 const signin = async (req: Request, res: Response) => {
     const {usernameOrEmail, password, remember} = req.body;
     let user: UserInterface;
+
+    if (!usernameOrEmail || !password) {
+        return res.status(400).json({message: "Please enter all fields."});
+    }
 
     if (validator.isEmail(usernameOrEmail)) {
         user = await User.findOne({ email: usernameOrEmail });

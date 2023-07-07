@@ -207,6 +207,26 @@ Returns a profile object of the user with the provided username
 - Code: 200
 - Content: `Profile`
 
+## Search users by username
+
+Returns a list of profile objects of users whose usernames contain the given `username` parameter
+
+- URL: `/user/search/:username`
+- Method: GET
+
+#### Request Headers
+
+- `authorization`: `bearer {token}`
+
+#### Request Params
+
+- `username`: username or substring of username
+
+#### Success Response
+
+- Code: 200
+- Content: `[Profile]`
+
 ## Edit Profile
 
 Edit the profile of a user
@@ -332,7 +352,7 @@ Creates a debt request
 
 #### Success Response
 
-- Code: 200
+- Code: 201
 - Content: `DebtInterface` of the newly created debt
 
 ## Approve debt
