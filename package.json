@@ -6,7 +6,7 @@
   "scripts": {
     "build": "npx tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node dist/server.js",
+    "start": "node public/index.js",
     "dev": "nodemon --watch src/**/*.ts --exec ts-node src/index.ts"
   },
   "keywords": [],
