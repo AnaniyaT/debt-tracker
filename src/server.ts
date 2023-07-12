@@ -14,14 +14,17 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 
+app.get('/', (req, res) => {
+  res.send("Connected to server!");
+  console.log(req.ip)
+});
+
 app.use('/auth', authRouter);
 app.use(authMiddleware);
 app.use('/user', userRouter);
 app.use('/debt', debtRouter);
 
-app.get('/', (req, res) => {
-  res.send("Connected to server!");
-});
+
 
 mongoose.set("strictQuery", false);
 
