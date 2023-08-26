@@ -34,3 +34,5 @@ mongoose.connect(process.env.MONGODB_URI, {
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
   });
+
+module.exports = app;
